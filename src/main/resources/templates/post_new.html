@@ -24,7 +24,7 @@
         <form action="/posts" method="post"
               th:action="@{'/posts/new'}" th:object="${post}">
             <input type="hidden" th:field="*{createdAt}" />
-            <h2>Write new Post</h2>
+            <h2>New Post</h2>
             <div>
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" th:field="*{title}" required>
@@ -42,7 +42,7 @@
                 </select>
             </div>
 
-            <button type="submit">Create Post</button>
+            <button type="submit">Create New Post</button>
         </form>
     </div>
 
