@@ -2,9 +2,14 @@ package com.example.blog.service;
 
 import com.example.blog.model.Category;
 import com.example.blog.repository.CategoryRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
+
+
+
+
+@Slf4j
 
 @Service
 public class CategoryService {

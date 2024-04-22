@@ -5,38 +5,68 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Blog :: Login</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog :: Home</title>
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.0/lux/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
 
-    <!-- Bootstrap JS and Popper.js (required for Bootstrap) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        .login-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-heading {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #343a40;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        .login-form button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-form button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>Travel Buddies</h1>
-    <hr />
-    <a th:href="@{/}">Home</a>
-    <h2>Login</h2>
-    <form action="#"
-          th:action="@{/login}"
-          method="POST">
-        <div>
-            <label for="email">Email:</label>
-            <input id="email" type="text" name="email" placeholder="Email" />
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input id="password" type="password" name="password" placeholder="Password" />
-        </div>
-        <button type="submit">Login!</button>
-    </form>
+<div class="container mt-5">
+    <div class="login-container">
+        <img src="/images/login.png" alt="Travel Image" class="img-fluid mb-4 mx-auto d-block" style="max-width: 80px;">
+        <h1 class="login-heading">Travel Buddies</h1>
+        <form th:action="@{/login}" method="POST" class="login-form">
+            <div class="mb-3">
+                <input id="email" type="text" name="email" class="form-control" placeholder="Enter your email" />
+            </div>
+            <div class="mb-3">
+                <input id="password" type="password" name="password" class="form-control" placeholder="Enter your password" />
+            </div>
+            <button type="submit" class="btn btn-success">Login</button>
+        </form>
+    </div>
 </div>
-
 </body>
 </html>

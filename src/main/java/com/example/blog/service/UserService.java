@@ -12,7 +12,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 
+
+
+
+@Slf4j
 @Service
 public class UserService {
 
@@ -42,11 +47,13 @@ public class UserService {
         }
         user.setUpdatedAt(LocalDateTime.now());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        log.info("Saved user: {}", user.toString());
         return userRepository.save(user);
     }
 
     public Optional<User> findByEmail(String email)
     {
+        log.debug("Find user by email: {}", email);
         return userRepository.findByEmail(email);
     }
 }

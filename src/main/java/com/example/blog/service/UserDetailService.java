@@ -13,7 +13,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
+
+
+
+@Slf4j
 @Component("userDetailsService")
 @RequiredArgsConstructor
 public class UserDetailService implements UserDetailsService {
@@ -27,6 +32,7 @@ public class UserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.debug("Username: {}", username);
         Optional<User> optionalUser = userService.findByEmail(username);
         if (optionalUser.isEmpty()) {
             throw new UsernameNotFoundException("User not found");

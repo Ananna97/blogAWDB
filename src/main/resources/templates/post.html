@@ -7,64 +7,168 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Blog :: Post</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog :: Home</title>
-    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.0/lux/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
 
-    <!-- Bootstrap JS and Popper.js (required for Bootstrap) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        .container {
+            margin: 10%;
+        }
+
+        .post {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .post h2 {
+            color: #3d88d7;
+            margin-bottom: 10px;
+        }
+
+        .post h5 {
+            color: #6c757d;
+            margin-top: 20px;
+            margin-bottom: 5px;
+        }
+
+        .post p {
+            color: #212529;
+            margin-bottom: 20px;
+        }
+
+        .rating-section {
+            margin-top: 20px;
+            width: 50%;
+        }
+
+        .rating-section h5 {
+            color: #6c757d;
+            margin-bottom: 10px;
+
+        }
+
+        .comment p {
+            color: #212529;
+            margin-bottom: 10px;
+        }
+
+        .comment {
+            margin-top: 20px;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border-color: grey;
+            margin-bottom: 10px;
+            background: white;
+        }
+
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        textarea {
+            resize: none;
+            width: 100%;
+            height: 100px;
+            border-radius: 5px;
+            border-color: #ced4da;
+            margin-bottom: 10px;
+        }
+
+        .comment-box {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <a th:href="@{/}">Home</a>
-        <div class="post">
-            <h2 th:text="${post.title}">Title</h2>
-            <h5 th:text="'Category: ' + ${post.category.getCategoryName()}">Category</h5>
-            <h5 th:text="'Created at: ' + ${post.createdAt}">Created At</h5>
-            <h5 th:text="'Written by: ' + ${post.user.firstName} + ' ' + ${post.user.lastName}">Account First Name</h5>
-            <br>
-            <p th:text="${post.body}">Body text</p>
-        </div>
-        <br>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Home</a>
 
-        <h5 th:text="'Average Rating: ' + ${averageRating}"></h5>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="rating-section">
-            <h5>Rate this post:</h5>
-            <form th:action="@{'/ratings/{id}'(id=${post.id})}" method="post">
-                <input type="number" id="rating" name="value" min="1" max="10" required>
-                <button type="submit">Submit Rating</button>
-            </form>
-        </div>
-        <br>
-
-        <h5>Comments</h5>
-
-        <div class="comment" th:each="comment : ${comments}">
-            <p><a th:text="${comment.user.firstName} + ' ' + ${comment.user.lastName}  + ': ' + ${comment.text}">Text</a></p>
-            <br>
-        </div>
-
-        <form action="#" method="post" th:action="@{'/comments/{id}'(id=${post.id})}" th:object="${comment}">
-            <h5>Write new comment</h5>
-            <div>
-                <label for="title">Text:</label>
-                <textarea id="title" name="title" th:field="*{text}"></textarea>
-            </div>
-            <br>
-            <button type="submit">Add Comment</button>
-        </form>
-        <br>
-        <ul sec:authorize="isAuthenticated()">
-            <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
-            <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto" sec:authorize="!isAuthenticated()">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/login}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/register}">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
         </ul>
     </div>
+</nav>
 
+<div class="container">
+    <div class="post">
+        <h2 th:text="${post.title}">Title</h2>
+        <h5 th:text="'Category: ' + ${post.category.getCategoryName()}">Category</h5>
+        <h5 th:text="'Created at: ' + ${post.createdAt}">Created At</h5>
+        <h5 th:text="'Written by: ' + ${post.user.firstName} + ' ' + ${post.user.lastName}">Author</h5>
+        <br>
+        <p th:text="${post.body}">Body text</p>
+    </div>
+    <br>
+
+    <h5 th:text="'Average Rating: ' + ${averageRating}"></h5>
+
+    <div class="rating-section">
+        <h5>Rate this post: <span class="badge bg-secondary">5</span></h5>
+        <!-- Change the rating display to a badge -->
+        <form th:action="@{'/ratings/{id}'(id=${post.id})}" method="post">
+            <input type="range" id="rating" name="value" min="1" max="10" required class="form-control form-range">
+            <button type="submit" class="btn btn-primary">Submit Rating</button>
+        </form>
+    </div>
+    <br>
+
+    <h5>Comments</h5>
+
+    <!-- Each comment displayed in a white box -->
+    <div class="comment-box" th:each="comment : ${comments}">
+        <p><a th:text="${comment.user.firstName} + ' ' + ${comment.user.lastName}  + ': ' + ${comment.text}">Text</a></p>
+        <br>
+    </div>
+
+    <form action="#" method="post" th:action="@{'/comments/{id}'(id=${post.id})}" th:object="${comment}">
+        <h5>Write new comment</h5>
+        <div>
+            <textarea id="title" name="title" th:field="*{text}" class="form-control"></textarea>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Add Comment</button>
+    </form>
+    <br>
+    <ul sec:authorize="isAuthenticated()">
+        <li><a th:href="@{'/posts/' + ${post.id} + '/edit'}">Edit</a></li>
+        <li><a th:href="@{'/posts/' + ${post.id} + '/delete'}">Delete</a></li>
+    </ul>
+</div>
 </body>
 </html>

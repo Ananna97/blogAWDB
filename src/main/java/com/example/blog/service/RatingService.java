@@ -5,7 +5,12 @@ import com.example.blog.repository.RatingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+
+
+
+@Slf4j
 @Service
 public class RatingService {
 
@@ -20,6 +25,7 @@ public class RatingService {
     }
 
     public Rating save(Rating rating) {
+        log.info("Rating: {}", rating.getPost().getId());
         return ratingRepository.save(rating);
     }
 }

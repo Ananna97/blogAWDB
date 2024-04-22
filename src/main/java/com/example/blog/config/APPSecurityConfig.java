@@ -45,7 +45,7 @@ public class APPSecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/")
-                        .failureUrl("/login?error")
+//                        .failureUrl("/login?error")
                         .permitAll()
                 )
 
