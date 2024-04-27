@@ -1,5 +1,6 @@
 package com.example.blog.service;
 
+import com.example.blog.exceptions.RatingServiceException;
 import com.example.blog.model.Rating;
 import com.example.blog.repository.RatingRepository;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class RatingService {
     }
 
     public Rating save(Rating rating) {
+        if (rating.getPost() == null) {
+            throw new RatingServiceException("Post is required for saving a rating");
+        }
         log.info("Rating: {}", rating.getPost().getId());
         return ratingRepository.save(rating);
     }

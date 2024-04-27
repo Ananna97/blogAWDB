@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +33,7 @@ public class User{
     private String email;
 
     @NotNull(message = "Password cannot be null")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;

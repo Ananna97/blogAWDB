@@ -38,6 +38,8 @@ public class UserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         User user = optionalUser.get();
+        log.debug("Loaded user: " + user.getEmail() + ", Pass: " + user.getPassword());
+
         List<GrantedAuthority> grantedPermissions = user
                 .getRoles()
                 .stream()

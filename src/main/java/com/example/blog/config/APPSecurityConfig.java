@@ -42,7 +42,7 @@ public class APPSecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .usernameParameter("email")
+                         .usernameParameter("email")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/")
 //                        .failureUrl("/login?error")

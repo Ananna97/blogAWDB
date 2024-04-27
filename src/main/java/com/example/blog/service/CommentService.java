@@ -1,8 +1,10 @@
 package com.example.blog.service;
 
+import com.example.blog.exceptions.CommentServiceException;
 import com.example.blog.model.Comment;
 import com.example.blog.model.Post;
 import com.example.blog.repository.CommentRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +30,10 @@ public class CommentService {
         return commentRepository.findByPost(post);
     }
 
-    public Comment save(Comment comment) {
+    public Comment save(@Valid Comment comment) {
+        if (comment.getPost() == null) {
+            throw new CommentServiceException("Post is required for saving a comment");
+        }
         return commentRepository.save(comment);
     }
 }

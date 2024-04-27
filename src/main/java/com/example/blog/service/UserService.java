@@ -1,5 +1,6 @@
 package com.example.blog.service;
 
+import com.example.blog.exceptions.UserNotFoundException;
 import com.example.blog.model.Role;
 import com.example.blog.model.User;
 import com.example.blog.repository.RoleRepository;
@@ -53,7 +54,11 @@ public class UserService {
 
     public Optional<User> findByEmail(String email)
     {
-        log.debug("Find user by email: {}", email);
-        return userRepository.findByEmail(email);
+        log.info("Find user by email: {}", email);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException("User not found with email: " + email);
+        }
+        return optionalUser;
     }
 }

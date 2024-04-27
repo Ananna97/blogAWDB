@@ -1,5 +1,6 @@
 package com.example.blog.service;
 
+import com.example.blog.exceptions.PostServiceException;
 import com.example.blog.model.Post;
 import com.example.blog.model.Rating;
 import com.example.blog.repository.PostRepository;
@@ -23,7 +24,8 @@ public class PostService {
     }
 
     public Post findById(Long id) {
-        return postRepository.findById(id).orElse(null);
+        return postRepository.findById(id)
+                .orElseThrow(() -> new PostServiceException("Post not found with ID: " + id));
     }
 
     public List<Post> findAll() {
