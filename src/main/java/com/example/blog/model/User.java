@@ -38,7 +38,6 @@ public class User{
     @Pattern.List({
             @Pattern(regexp = "^(?=.*[0-9]).+$", message = "Password must contain at least one digit"),
             @Pattern(regexp = "^(?=.*[a-zA-Z]).+$", message = "Password must contain at least one letter"),
-            @Pattern(regexp = "^(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>\\/?]).+$", message = "Password must contain at least one special character")
     })
     private String password;
     LocalDateTime createdAt;

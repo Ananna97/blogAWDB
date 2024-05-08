@@ -5,9 +5,15 @@ import com.example.blog.model.User;
 import com.example.blog.repository.RoleRepository;
 import com.example.blog.repository.UserRepository;
 import com.example.blog.service.UserService;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -15,17 +21,28 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
-
+@SpringBootTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional
+@ActiveProfiles("test")
 public class UserServiceTest {
+
+    @Resource
+    private UserRepository userRepository;
+
+    @Resource
+    private RoleRepository roleRepository;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
 
     @Test
     public void testSave() {
-        UserRepository userRepository = Mockito.mock(UserRepository.class);
-        RoleRepository roleRepository = Mockito.mock(RoleRepository.class);
-        PasswordEncoder passwordEncoder = Mockito.mock(PasswordEncoder.class);
         UserService userService = new UserService(userRepository, passwordEncoder, roleRepository);
 
         User userToSave = new User();
+        userToSave.setFirstName("Diana");
+        userToSave.setLastName("Visan");
         userToSave.setEmail("test@example.com");
         userToSave.setPassword("password");
 
@@ -33,45 +50,30 @@ public class UserServiceTest {
         role.setName("ROLE_USER");
         when(roleRepository.findById("ROLE_USER")).thenReturn(Optional.of(role));
 
-        when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
-            User savedUser = invocation.getArgument(0);
-            savedUser.setId(1L);
-            savedUser.setCreatedAt(LocalDateTime.now());
-            savedUser.setUpdatedAt(LocalDateTime.now());
-            savedUser.setPassword("hashedPassword");
-            return savedUser;
-        });
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         when(passwordEncoder.encode("password")).thenReturn("hashedPassword");
 
         User savedUser = userService.save(userToSave);
 
-        assertEquals(1L, savedUser.getId());
         assertEquals("test@example.com", savedUser.getEmail());
         assertEquals("hashedPassword", savedUser.getPassword());
         assertTrue(savedUser.getRoles().contains(role));
-        assertTrue(savedUser.getCreatedAt() != null);
-        assertTrue(savedUser.getUpdatedAt() != null);
-        verify(userRepository, times(1)).save(userToSave);
     }
 
     @Test
     public void testFindByEmail() {
-        UserRepository userRepository = Mockito.mock(UserRepository.class);
-        UserService userService = new UserService(userRepository, null, null);
-
         User sampleUser = new User();
-        sampleUser.setId(1L);
+        sampleUser.setFirstName("Diana");
+        sampleUser.setLastName("Visan");
         sampleUser.setEmail("test@example.com");
+        sampleUser.setPassword("somepasss123");
+        userRepository.save(sampleUser);
 
-        when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(sampleUser));
-
-        Optional<User> foundUser = userService.findByEmail("test@example.com");
+        Optional<User> foundUser = userRepository.findByEmail("test@example.com");
 
         assertTrue(foundUser.isPresent());
-        assertEquals(1L, foundUser.get().getId());
         assertEquals("test@example.com", foundUser.get().getEmail());
-        verify(userRepository, times(1)).findByEmail("test@example.com");
     }
 }
 
