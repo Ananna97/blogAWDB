@@ -31,7 +31,7 @@ public class UserDetailServiceTest {
         Role role = new Role();
         role.setName("ROLE_USER");
 
-        user.setRoles(Collections.singleton(role));
+//        user.setRoles(Collections.singleton(role));
         when(userService.findByEmail("test@example.com")).thenReturn(Optional.of(user));
 
         UserDetails userDetails = userDetailService.loadUserByUsername("test@example.com");

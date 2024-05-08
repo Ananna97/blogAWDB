@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +35,11 @@ public class User{
 
     @NotNull(message = "Password cannot be null")
     @Size(min = 6, message = "Password must be at least 6 characters long")
+    @Pattern.List({
+            @Pattern(regexp = "^(?=.*[0-9]).+$", message = "Password must contain at least one digit"),
+            @Pattern(regexp = "^(?=.*[a-zA-Z]).+$", message = "Password must contain at least one letter"),
+            @Pattern(regexp = "^(?=.*[!@#$%^&*()_+\\-=[\\]{};':\"\\\\|,.<>\\/?]).+$", message = "Password must contain at least one special character")
+    })
     private String password;
     LocalDateTime createdAt;
     LocalDateTime updatedAt;

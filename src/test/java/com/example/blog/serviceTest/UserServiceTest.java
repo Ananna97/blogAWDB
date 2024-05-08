@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,6 +36,9 @@ public class UserServiceTest {
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User savedUser = invocation.getArgument(0);
             savedUser.setId(1L);
+            savedUser.setCreatedAt(LocalDateTime.now());
+            savedUser.setUpdatedAt(LocalDateTime.now());
+            savedUser.setPassword("hashedPassword");
             return savedUser;
         });
 
@@ -54,7 +58,6 @@ public class UserServiceTest {
     @Test
     public void testFindByEmail() {
         UserRepository userRepository = Mockito.mock(UserRepository.class);
-
         UserService userService = new UserService(userRepository, null, null);
 
         User sampleUser = new User();

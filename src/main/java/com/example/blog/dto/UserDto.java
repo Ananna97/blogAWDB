@@ -29,5 +29,4 @@ public class UserDto {
     @NotEmpty
     private String email;
 
-
 }

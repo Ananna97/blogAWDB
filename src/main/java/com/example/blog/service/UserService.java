@@ -5,6 +5,7 @@ import com.example.blog.model.Role;
 import com.example.blog.model.User;
 import com.example.blog.repository.RoleRepository;
 import com.example.blog.repository.UserRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,5 +61,30 @@ public class UserService {
             throw new UserNotFoundException("User not found with email: " + email);
         }
         return optionalUser;
+    }
+
+    public void authenticate(String email, String password) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid password");
+        }
+    }
+
+    public void register(User user, String roleName) {
+        if (user.getRoles().isEmpty()) {
+            Set<Role> roles = new HashSet<>();
+            roleRepository.findById("ROLE_USER").ifPresent(roles::add);
+            user.setRoles(roles);
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        LocalDateTime now = LocalDateTime.now();
+        user.setCreatedAt(now);
+        user.setUpdatedAt(now);
+
+        userRepository.save(user);
     }
 }
