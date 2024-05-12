@@ -40,15 +40,15 @@ public class APPSecurityConfig {
                     auth.anyRequest().authenticated();
                 })
 
-//                .formLogin(form -> form
-//                        .loginPage("/login")
-//                        .loginProcessingUrl("/login")
-//                         .usernameParameter("email")
-//                        .passwordParameter("password")
-//                        .defaultSuccessUrl("/")
-////                        .failureUrl("/login?error")
-//                        .permitAll()
-//                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                         .usernameParameter("email")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/login?error")
+                        .permitAll()
+                )
 
                 .logout(logout -> logout
                         .deleteCookies("JSESSIONID")
