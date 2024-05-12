@@ -139,11 +139,11 @@
     <h5 th:text="'Average Rating: ' + ${averageRating}"></h5>
 
     <div class="rating-section">
-        <h5>Rate this post: <span class="badge bg-secondary">5</span></h5>
+        <h5>Rate this post: </h5>
         <!-- Change the rating display to a badge -->
         <form th:action="@{'/ratings/{id}'(id=${post.id})}" method="post">
-            <input type="range" id="rating" name="value" min="1" max="10" required class="form-control form-range">
-            <button type="submit" class="btn btn-primary">Submit Rating</button>
+            <input type="number" id="rating" name="value" min="1" max="10" required>
+            <button type="submit">Submit Rating</button>
         </form>
     </div>
     <br>
