@@ -34,15 +34,12 @@ class HomeControllerTest {
 
     @Test
     void testHome() {
-        // Arrange
         List<Post> posts = new ArrayList<>();
         posts.add(new Post());
         when(postService.findAll()).thenReturn(posts);
 
-        // Act
         String viewName = homeController.home(model);
 
-        // Assert
         assertEquals("home", viewName);
         verify(postService, times(1)).findAll();
         verify(model, times(1)).addAttribute("posts", posts);

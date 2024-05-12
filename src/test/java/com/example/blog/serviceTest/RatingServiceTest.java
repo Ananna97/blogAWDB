@@ -59,21 +59,17 @@ public class RatingServiceTest {
         RatingRepository ratingRepository = Mockito.mock(RatingRepository.class);
         RatingService ratingService = new RatingService(ratingRepository);
 
-        // Create a sample Post
         Post post = new Post();
         post.setId(1L);
         post.setTitle("Sample Post");
         post.setBody("Sample body content");
         post.setCreatedAt(LocalDateTime.now());
 
-        // Create a new Rating to save
         Rating ratingToSave = new Rating(5);
         ratingToSave.setPost(post);
 
-        // Mock the behavior of ratingRepository.save() method
         when(ratingRepository.save(ratingToSave)).thenReturn(new Rating(1L, 5));
 
-        // Call the service method and verify the saved rating
         Rating savedRating = ratingService.save(ratingToSave);
         assertEquals(1L, savedRating.getId());
         assertEquals(5, savedRating.getValue());

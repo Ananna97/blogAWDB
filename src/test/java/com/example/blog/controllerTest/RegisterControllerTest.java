@@ -40,43 +40,34 @@ class RegisterControllerTest {
 
     @Test
     void getRegisterForm() {
-        // Arrange
         RegisterDTO registerDTO = new RegisterDTO();
 
-        // Act
         String viewName = registerController.getRegisterForm(model);
 
-        // Assert
         assertEquals("register", viewName);
         verify(model).addAttribute(eq("registerDTO"), any(RegisterDTO.class));
     }
 
     @Test
     void registerNewUser_Success() {
-        // Arrange
         RegisterDTO registerDTO = new RegisterDTO();
         User user = new User();
 
-        // Act
         when(bindingResult.hasErrors()).thenReturn(false);
         when(userService.save(any(User.class))).thenReturn(user);
         String viewName = registerController.registerNewUser(registerDTO, bindingResult);
 
-        // Assert
         assertEquals("redirect:/", viewName);
         verify(userService).save(any(User.class));
     }
 
     @Test
     void registerNewUser_Failure() {
-        // Arrange
         RegisterDTO registerDTO = new RegisterDTO();
 
-        // Act
         when(bindingResult.hasErrors()).thenReturn(true);
         String viewName = registerController.registerNewUser(registerDTO, bindingResult);
 
-        // Assert
         assertEquals("register", viewName);
     }
 }

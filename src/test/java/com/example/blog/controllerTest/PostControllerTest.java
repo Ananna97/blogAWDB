@@ -51,29 +51,23 @@ class PostControllerTest {
 
     @Test
     void testCreateNewPost() {
-        // Arrange
         Post post = new Post();
         when(userService.findByEmail(any())).thenReturn(Optional.of(new User()));
 
-        // Act
         String viewName = postController.createNewPost(post, principal);
 
-        // Assert
         assertEquals("redirect:/", viewName);
         verify(postService, times(1)).save(post);
     }
 
     @Test
     void testGetPostForEdit() {
-        // Arrange
         Long postId = 1L;
         Post post = new Post();
         when(postService.findById(postId)).thenReturn(post);
 
-        // Act
         String viewName = postController.getPostForEdit(postId, model);
 
-        // Assert
         assertEquals("post_edit", viewName);
         verify(postService, times(1)).findById(postId);
         verify(model, times(1)).addAttribute("post", post);
@@ -81,7 +75,6 @@ class PostControllerTest {
 
     @Test
     void testUpdatePost() {
-        // Arrange
         Long postId = 1L;
         Post existingPost = new Post();
         existingPost.setId(postId);
@@ -95,10 +88,8 @@ class PostControllerTest {
 
         when(postService.findById(postId)).thenReturn(existingPost);
 
-        // Act
         String viewName = postController.updatePost(postId, updatedPost);
 
-        // Assert
         assertEquals("redirect:/posts/" + postId, viewName);
         assertEquals("New Title", existingPost.getTitle());
         assertEquals("New Body", existingPost.getBody());
@@ -108,15 +99,12 @@ class PostControllerTest {
 
     @Test
     void testDeletePost() {
-        // Arrange
         Long postId = 1L;
         Post post = new Post();
         when(postService.findById(postId)).thenReturn(post);
 
-        // Act
         String viewName = postController.deletePost(postId);
 
-        // Assert
         assertEquals("redirect:/", viewName);
         verify(postService, times(1)).findById(postId);
         verify(postService, times(1)).delete(post);

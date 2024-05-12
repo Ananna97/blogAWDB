@@ -30,11 +30,9 @@ public class PostServiceTest {
         when(postRepository.findById(1L)).thenReturn(java.util.Optional.of(samplePost));
         when(postRepository.findById(2L)).thenReturn(java.util.Optional.empty());
 
-        // Test finding a post that exists
         Post foundPost = postService.findById(1L);
         assertEquals(samplePost, foundPost);
 
-        // Test finding a post that doesn't exist
         assertThrows(PostServiceException.class, () -> postService.findById(2L));
     }
 

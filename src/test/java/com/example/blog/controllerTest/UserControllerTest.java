@@ -31,7 +31,6 @@ class UserControllerTest {
 
     @Test
     void getAllUsers() {
-        // Arrange
         User user1 = new User();
         user1.setEmail("test1@example.com");
         user1.setPassword("password1");
@@ -43,10 +42,8 @@ class UserControllerTest {
         List<User> expectedUsers = Arrays.asList(user1, user2);
         when(userService.findAll()).thenReturn(expectedUsers);
 
-        // Act
         List<User> result = userController.getAllUsers();
 
-        // Assert
         assertEquals(expectedUsers.size(), result.size());
         assertEquals(expectedUsers.get(0).getEmail(), result.get(0).getEmail());
         assertEquals(expectedUsers.get(1).getEmail(), result.get(1).getEmail());
@@ -55,17 +52,14 @@ class UserControllerTest {
 
     @Test
     void addUser() {
-        // Arrange
         User newUser = new User();
         newUser.setEmail("test@example.com");
         newUser.setPassword("password");
 
         when(userService.save(any(User.class))).thenReturn(newUser);
 
-        // Act
         User result = userController.addUser(newUser);
 
-        // Assert
         assertEquals(newUser.getEmail(), result.getEmail());
         assertEquals(newUser.getPassword(), result.getPassword());
         verify(userService, times(1)).save(any(User.class));
